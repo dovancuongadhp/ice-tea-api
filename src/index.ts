@@ -1,17 +1,15 @@
 import * as express from "express";
 import * as morgan from "morgan";
+import * as bodyParser from "body-parser";
+import AllRouter from "./routers/index";
 const app = express();
+app.use(bodyParser.json());
+// LOGGER
+morgan("combined");
 
-app.get("/", (req, res) => {
-  res.send("Well done!");
-});
-app.get("/hello", (req, res) => {
-  res.json({
-    name: " do van cuong dep trai 123456",
-    age: 123,
-    address: "an duong hai phong",
-  });
-});
+// ROUTERS
+AllRouter(app);
+
 app.listen(8000, () => {
-  console.log("The application is listening on port 3000!");
+  console.log("The application is listening on port 8000!");
 });

@@ -1,8 +1,7 @@
 import userRouter from "./userRouter";
-import * as express from "express";
+import productRouter from "./productRouter";
 export default function AllRouter(app) {
-  // Router for user
+  // --> Mapping all Routers
   app.use("/users", userRouter);
-  //   app.use("/products");
-  //   app.use("/example");
+  app.use("/products",productRouter);
 }

@@ -1,7 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function allRouter(app) {
-    app.use("/user", (req, res) => res.send("hello"));
+const userRouter_1 = require("./userRouter");
+const productRouter_1 = require("./productRouter");
+function AllRouter(app) {
+    // --> Mapping all Routers
+    app.use("/users", userRouter_1.default);
+    app.use("/products", productRouter_1.default);
 }
-exports.default = allRouter;
+exports.default = AllRouter;
 //# sourceMappingURL=index.js.map

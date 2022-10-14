@@ -3,21 +3,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
+const index_1 = require("./routers/index");
 const app = express();
 app.use(bodyParser.json());
-// LOGGER
-morgan("combined");
-// ROUTERS
-// app.use(allRouter);
-// allRouter();
-const router = express.Router();
-app.use("/test", router
-    .get("/api", (req, res) => {
-        res.send("test 1231233123");
-    })
-    .post("/post", (req, res) => {
-        res.send("post");
-    }));
+// [LOGGER]
+app.use(morgan("combined"));
+// [ROUTERS]
+(0, index_1.default)(app);
+// [TEST JSON]
+app.post("/post", (req, res) => {
+    res.status(200).json(req.body);
+});
 app.listen(8000, () => {
     console.log("The application is listening on port 8000!");
 });

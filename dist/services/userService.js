@@ -1,6 +1,6 @@
-import {User} from "./interfaces/types";
-
-const listUsers: User[] = [
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+const listUsers = [
     {
         id: 1,
         name: "Do Van Cuong",
@@ -14,17 +14,14 @@ const listUsers: User[] = [
         phoneNumber: "0348513122",
     },
 ];
-
 class UserService {
     constructor() {
     }
-
     getAllUsers() {
         return listUsers;
     }
-
     addUser(id) {
-
     }
 }
-export default UserService;
+exports.default = UserService;
+//# sourceMappingURL=userService.js.map

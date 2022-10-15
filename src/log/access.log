@@ -1,0 +1,5 @@
+::1 - - [14/Oct/2022:16:20:24 +0000] "GET /hello HTTP/1.1" 404 144
+::1 - - [14/Oct/2022:16:20:32 +0000] "GET /users/allUser HTTP/1.1" 200 186
+::1 - - [14/Oct/2022:16:20:32 +0000] "GET /favicon.ico HTTP/1.1" 404 150
+::1 - - [14/Oct/2022:16:21:05 +0000] "GET /products/allProduct HTTP/1.1" 200 12
+::1 - - [14/Oct/2022:16:22:12 +0000] "GET /users/allUser HTTP/1.1" 200 186

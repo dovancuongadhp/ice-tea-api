@@ -4,10 +4,13 @@ const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const index_1 = require("./routers/index");
+const cors = require("cors");
 const app = express();
 app.use(bodyParser.json());
 // [LOGGER]
 app.use(morgan("combined"));
+// [CORS]
+app.use(cors());
 // [ROUTERS]
 (0, index_1.default)(app);
 // [TEST JSON]

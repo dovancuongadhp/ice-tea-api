@@ -5,6 +5,8 @@ import AllRouter from "./routers/index";
 import * as cors from "cors";
 import * as fs from "fs";
 import * as path from "path";
+import * as dotenv from "dotenv";
+import ConnectMongoDb from "./config/database";
 const app = express();
 app.use(bodyParser.json());
 
@@ -23,11 +25,12 @@ app.use(cors());
 // [ROUTERS]
 AllRouter(app);
 
-// [TEST JSON]
-app.post("/post", (req, res) => {
-  res.status(200).json(req.body);
-});
+// [.ENV]
+dotenv.config();
 
-app.listen(8000, () => {
+// [CONNECT MONGODB]
+ConnectMongoDb();
+
+app.listen(process.env.PORT, () => {
   console.log("The application is listening on port 8000!");
 });

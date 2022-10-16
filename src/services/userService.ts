@@ -1,30 +1,14 @@
-import {User} from "./interfaces/types";
-
-const listUsers: User[] = [
-    {
-        id: 1,
-        name: "Do Van Cuong",
-        address: "An Duong - Hai Phong",
-        phoneNumber: "0348513665",
-    },
-    {
-        id: 2,
-        name: "Tran Minh Quang",
-        address: "An Duong - Hai Phong",
-        phoneNumber: "0348513122",
-    },
-];
-
+import { IUser } from "./interfaces/types";
+import User from "../models/User";
+import { mongooseConvert } from "../utils/mongoose";
 class UserService {
-    constructor() {
-    }
+  constructor() {}
 
-    getAllUsers() {
-        return listUsers;
-    }
+  async getAllUsers() {
+    const data = await User.find();
+    return data;
+  }
 
-    addUser(id) {
-
-    }
+  addUser(user: IUser) {}
 }
-export default UserService;
+export default new UserService();

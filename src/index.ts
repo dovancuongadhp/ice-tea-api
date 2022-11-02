@@ -20,7 +20,7 @@ app.use(
 );
 
 // [CORS]
-app.use(cors());
+app.use(cors({ origin: "*" }));
 
 // [ROUTERS]
 AllRouter(app);

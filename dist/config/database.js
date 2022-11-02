@@ -9,16 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const User_1 = require("../models/User");
-class UserService {
-    constructor() { }
-    getAllUsers() {
-        return __awaiter(this, void 0, void 0, function* () {
-            const data = yield User_1.default.find();
-            return data;
+const mongoose = require("mongoose");
+function ConnectMongoDb() {
+    return __awaiter(this, void 0, void 0, function* () {
+        mongoose.connect(process.env.MONGODB_URL, () => {
+            console.log("connected");
         });
-    }
-    addUser(user) { }
+    });
 }
-exports.default = new UserService();
-//# sourceMappingURL=userService.js.map
+exports.default = ConnectMongoDb;
+//# sourceMappingURL=database.js.map

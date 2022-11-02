@@ -5,19 +5,27 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const index_1 = require("./routers/index");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
+const dotenv = require("dotenv");
+const database_1 = require("./config/database");
 const app = express();
 app.use(bodyParser.json());
 // [LOGGER]
-app.use(morgan("combined"));
+app.use(morgan("common", {
+    stream: fs.createWriteStream(path.join(__dirname, "log/access.log"), {
+        flags: "a",
+    }),
+}));
 // [CORS]
 app.use(cors());
 // [ROUTERS]
 (0, index_1.default)(app);
-// [TEST JSON]
-app.post("/post", (req, res) => {
-    res.status(200).json(req.body);
-});
-app.listen(8000, () => {
+// [.ENV]
+dotenv.config();
+// [CONNECT MONGODB]
+(0, database_1.default)();
+app.listen(process.env.PORT, () => {
     console.log("The application is listening on port 8000!");
 });
 //# sourceMappingURL=index.js.map

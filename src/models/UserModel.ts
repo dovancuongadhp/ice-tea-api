@@ -1,15 +1,16 @@
 import mongoose, { Schema } from "mongoose";
 
 const User = new Schema({
-  id: {
+  _id: {
     type: mongoose.Schema.Types.ObjectId,
     index: true,
-    required: true,
-    auto: true,
+    auto: true
   },
-  name: String,
+  fullName: {type: String, require : true},
+  email : String ,
   age: Number,
   address: String,
   phoneNumber: String,
+  password : String,
 });
 export default mongoose.model("User", User);

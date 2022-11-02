@@ -9,16 +9,29 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const User_1 = require("../models/User");
-class UserService {
-    constructor() { }
-    getAllUsers() {
+exports.BaseRepository = void 0;
+class BaseRepository {
+    constructor(db, collectionName) {
+        this._collection = db.collection(collectionName);
+    }
+    find(item) {
+        throw new Error("Method not implemented.");
+    }
+    findOne(id) {
+        throw new Error("Method not implemented.");
+    }
+    create(item) {
         return __awaiter(this, void 0, void 0, function* () {
-            const data = yield User_1.default.find();
-            return data;
+            const result = yield this._collection.insertOne(item);
+            return !!result;
         });
     }
-    addUser(user) { }
+    update(_id, item) {
+        throw new Error("Method not implemented.");
+    }
+    delete(_id) {
+        throw new Error("Method not implemented.");
+    }
 }
-exports.default = new UserService();
-//# sourceMappingURL=userService.js.map
+exports.BaseRepository = BaseRepository;
+//# sourceMappingURL=BaseRepository.js.map

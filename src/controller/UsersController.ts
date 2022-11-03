@@ -13,7 +13,7 @@ class UserController {
   }
   async getUserById(req: Request, res: Response) {
     const id = String(req.params.id)
-    const userById = await UsersService.getUserById();
+    const userById = await UsersService.getUserById(id);
     if (!userById) {
       res.status(200).json(new DataResponse(200, "dont found user", null));
     }

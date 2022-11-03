@@ -18,7 +18,19 @@ class UserService {
     })
     return listUsersDto;
   }
-
+  async getUserById(id : any):Promise<UserDto> {
+    const user = await UserModel.findById({_id : id});
+    console.log(user)
+    const userDto:UserDto = {
+        _id: String(user.id),
+        fullName: String(user.fullName),
+        email: String(user.email),
+        age : String(user.age),
+        address: String(user.address),
+        phoneNumber: String(user.phoneNumber)
+    }
+    return userDto;
+  }
   async addUser(user: IUser) {
     const newUser = new UserModel(user);
     await newUser.save()
@@ -33,18 +45,6 @@ class UserService {
     return userDto;
   }
 
-  async getUserById() {
-    const user = await UserModel.findOne({_id : "636285189f9c0e6addadd968"});
-    // console.log(user)
-    // const userDto:UserDto = {
-    //     _id: String(user.id),
-    //     fullName: String(user.fullName),
-    //     email: String(user.email),
-    //     age : String(user.age),
-    //     address: String(user.address),
-    //     phoneNumber: String(user.phoneNumber)
-    // }
-    return user 
-  }
+ 
 }
 export default new UserService();

@@ -1,6 +1,8 @@
 import { IUser } from "./interfaces/types";
 import UserModel from "../models/UserModel";
 import { UserDto } from "dto/UserDto";
+import ErrorResponse from "../models/ErrorResponse";
+import { ERROR_CODE } from "../types/ErrorsCode";
 class UserService {
   constructor() {}
 
@@ -20,7 +22,6 @@ class UserService {
   }
   async getUserById(id : any):Promise<UserDto> {
     const user = await UserModel.findById({_id : id});
-    console.log(user)
     const userDto:UserDto = {
         _id: String(user.id),
         fullName: String(user.fullName),
@@ -33,18 +34,22 @@ class UserService {
   }
   async addUser(user: IUser) {
     const newUser = new UserModel(user);
-    await newUser.save()
-    const userDto:UserDto = {
-        _id: String(newUser._id),
+    try{
+        await newUser.save()
+    }catch(error){
+        return ErrorResponse({errorCode : ERROR_CODE.FAILED,message : error._message,data : null});
+    }
+    //oke
+    const userDto = {
+        _id: String(newUser.id),
         fullName: String(newUser.fullName),
         email: String(newUser.email),
         age : String(newUser.age),
         address: String(newUser.address),
         phoneNumber: String(newUser.phoneNumber)
     }
-    return userDto;
+    return ErrorResponse({errorCode : ERROR_CODE.SUCCESSFULLY,message : "Successfully",data : userDto});
   }
-
  
 }
 export default new UserService();

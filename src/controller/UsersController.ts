@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import UsersService from "../services/UsersService";
 import DataResponse from "../models/DataResponse";
+import { ERROR_CODE } from "../types/ErrorsCode";
 
 class UserController {
   constructor() {}
@@ -20,13 +21,15 @@ class UserController {
     res.status(200).json(new DataResponse(200, "oke", userById));
   }
   async addUser(req: Request, res: Response) {
-    const newUser = await UsersService.addUser(req.body);
-    if (!newUser) {
-      res.status(200).json(new DataResponse(203, "fail add user", null));
+    const reponseService = await UsersService.addUser(req.body);
+    if (reponseService.errorCode === ERROR_CODE.FAILED) {
+      res.status(200).json(new DataResponse(203, reponseService.message, reponseService.data));
+    }else{
+        res.status(200).json(new DataResponse(200, reponseService.message, reponseService.data));
     }
-    res.status(200).json(new DataResponse(200, "oke", newUser));
+    
   }
-  remove(req: Request, res: Response) {
+  async remove(req: Request, res: Response) {
     res.send("REMOVE USER");
   }
 }

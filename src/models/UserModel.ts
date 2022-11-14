@@ -6,11 +6,11 @@ const User = new Schema({
     index: true,
     auto: true
   },
-  fullName: {type: String, require : true},
-  email : String ,
+  fullName: {type: String, required : [true,"fullName must be require"]},
+  email : {type: String, required : [true,"email must be require"],unique : true},
   age: Number,
   address: String,
   phoneNumber: String,
-  password : String,
-});
+  password : {type: String, required : [true,"password must be require"]},
+},{_id: false});
 export default mongoose.model("User", User);

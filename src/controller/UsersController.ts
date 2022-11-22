@@ -5,13 +5,12 @@ import { ERROR_CODE } from "../types/ErrorsCode";
 
 class UserController {
   constructor() {}
-  index(req, res) {
-    res.send("USER CONTROLLER INDEX");
-  }
+  // [GET]: getAllUsers
   async getListUser(req: Request, res: Response) {
     const userList = await UsersService.getAllUsers();
     res.status(200).json(new DataResponse(200, "oke", userList));
   }
+  // [GET]: getUserById
   async getUserById(req: Request, res: Response) {
     const id = String(req.params.id);
     const userById = await UsersService.getUserById(id);
@@ -25,6 +24,7 @@ class UserController {
         .json(new DataResponse(200, userById.message, userById.data));
     }
   }
+  // [GET]: getUserByEmail
   async getUserByEmail(req: Request, res: Response) {
     const {email}  = req.query;
     const userByEmail = await UsersService.getUserByEmail(email);
@@ -38,6 +38,7 @@ class UserController {
           .json(new DataResponse(200, userByEmail.message, userByEmail.data));
       }
   }
+  // [POST]: addUser
   async addUser(req: Request, res: Response) {
     const reponseService = await UsersService.addUser(req.body);
     if (reponseService.errorCode === ERROR_CODE.FAILED) {

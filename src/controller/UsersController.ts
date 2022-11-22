@@ -13,21 +13,46 @@ class UserController {
     res.status(200).json(new DataResponse(200, "oke", userList));
   }
   async getUserById(req: Request, res: Response) {
-    const id = String(req.params.id)
+    const id = String(req.params.id);
     const userById = await UsersService.getUserById(id);
-    if (!userById) {
-      res.status(200).json(new DataResponse(200, "dont found user", null));
+    if (userById.errorCode === ERROR_CODE.FAILED) {
+      res
+        .status(200)
+        .json(new DataResponse(200, userById.message, userById.data));
+    } else {
+      res
+        .status(200)
+        .json(new DataResponse(200, userById.message, userById.data));
     }
-    res.status(200).json(new DataResponse(200, "oke", userById));
+  }
+  async getUserByEmail(req: Request, res: Response) {
+    const {email}  = req.query;
+    const userByEmail = await UsersService.getUserByEmail(email);
+    if (userByEmail.errorCode === ERROR_CODE.FAILED) {
+        res
+          .status(200)
+          .json(new DataResponse(200, userByEmail.message, userByEmail.data));
+      } else {
+        res
+          .status(200)
+          .json(new DataResponse(200, userByEmail.message, userByEmail.data));
+      }
   }
   async addUser(req: Request, res: Response) {
     const reponseService = await UsersService.addUser(req.body);
     if (reponseService.errorCode === ERROR_CODE.FAILED) {
-      res.status(200).json(new DataResponse(203, reponseService.message, reponseService.data));
-    }else{
-        res.status(200).json(new DataResponse(200, reponseService.message, reponseService.data));
+      res
+        .status(200)
+        .json(
+          new DataResponse(200, reponseService.message, reponseService.data)
+        );
+    } else {
+      res
+        .status(200)
+        .json(
+          new DataResponse(200, reponseService.message, reponseService.data)
+        );
     }
-    
   }
   async remove(req: Request, res: Response) {
     res.send("REMOVE USER");

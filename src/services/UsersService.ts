@@ -1,4 +1,4 @@
-import { IUser } from "./types/types";
+import { IUser } from "./types";
 import UserModel from "../models/UserModel";
 import { UserDto } from "dto/UserDto";
 import ErrorResponse from "../models/ErrorResponse";

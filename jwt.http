@@ -1,0 +1,9 @@
+GET http://localhost:8000/productList
+Authorization: Beaer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE2Njk0MDMyODAsImV4cCI6MTY2OTQwMzM4MH0.Ra5NayeHun4BwoD4CqUkTU3ppznASsfH8-r54dUFlPk
+
+###
+POST http://localhost:8000/login
+
+{
+    "email" : "dovancuongadhp@gmail.com"
+}

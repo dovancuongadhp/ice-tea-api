@@ -36,6 +36,13 @@ app.post('/login', (req, res) => {
     refreshTokenArr.push(refresh_token)
     return res.json({access_token,refresh_token});
   });
+
+// logout 
+app.post('/logout',(req,res)=>{
+    const refresh_token = req.body.token;
+    refreshTokenArr = refreshTokenArr.filter(refToken => refToken != refresh_token);
+    res.sendStatus(200);
+})
   
 
 app.listen(8500, () => {

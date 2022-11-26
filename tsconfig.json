@@ -8,6 +8,6 @@
     "outDir": "./dist",
     "baseUrl": "./src"
   },
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/authServer.js"],
   "exclude": ["node_modules"]
 }

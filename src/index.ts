@@ -39,6 +39,13 @@ dotenv.config();
 ConnectMongoDb();
 
 // JWT
+app.use(function(req, res, next) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    res.setHeader('Access-Control-Allow-Credentials', 'true');
+    next();
+});
 
 const productList = [
   {
@@ -61,7 +68,7 @@ app.get('/productList', authenToken, (req, res) => {
 
 function authenToken(req : any, res : any, next : any) {
   const authorizationHeader = req.headers['authorization'];
-  // Beaer [Token]
+  // Beaer [Token] 
   const token = authorizationHeader.split(' ')[1];
   if (!token) res.sendStatus(401);
 

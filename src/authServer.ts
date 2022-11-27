@@ -23,14 +23,14 @@ app.post('/refreshToken',(req,res)=>{
 
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET, (err : any, data : any) => {
         if (err) res.sendStatus(403);
-        const access_token = jwt.sign({email : data.email},process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '60s' })
+        const access_token = jwt.sign({email : data.email},process.env.ACCESS_TOKEN_SECRET,{ expiresIn: '1d' })
         res.json({access_token})
       });
 });
 // login get token
 app.post('/login', (req, res) => {
     const data = req.body;
-    const access_token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '60s' });
+    const access_token = jwt.sign(data, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
     const refresh_token = jwt.sign(data, process.env.REFRESH_TOKEN_SECRET);
 
     refreshTokenArr.push(refresh_token)

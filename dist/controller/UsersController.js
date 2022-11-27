@@ -9,23 +9,68 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const userService_1 = require("../services/userService");
+const UsersService_1 = require("../services/UsersService");
+const DataResponse_1 = require("../models/DataResponse");
+const ErrorsCode_1 = require("../types/ErrorsCode");
 class UserController {
     constructor() { }
-    index(req, res) {
-        res.send("USER CONTROLLER INDEX");
-    }
+    // [GET]: getAllUsers
     getListUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userList = yield userService_1.default.getAllUsers();
-            res.status(200).json(userList);
+            const userList = yield UsersService_1.default.getAllUsers();
+            res.status(200).json(new DataResponse_1.default(200, 'oke', userList));
         });
     }
-    addUser(req, res) {
-        res.send("ADD USER");
+    // [GET]: getUserById
+    getUserById(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = String(req.params.id);
+            const userById = yield UsersService_1.default.getUserById(id);
+            if (userById.errorCode === ErrorsCode_1.ERROR_CODE.FAILED) {
+                res.status(200).json(new DataResponse_1.default(200, userById.message, userById.data));
+            }
+            else {
+                res.status(200).json(new DataResponse_1.default(200, userById.message, userById.data));
+            }
+        });
     }
-    remove(req, res) {
-        res.send("REMOVE USER");
+    // [GET]: getUserByEmail
+    getUserByEmail(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const { email } = req.query;
+            const userByEmail = yield UsersService_1.default.getUserByEmail(email);
+            if (userByEmail.errorCode === ErrorsCode_1.ERROR_CODE.FAILED) {
+                res.status(200).json(new DataResponse_1.default(200, userByEmail.message, userByEmail.data));
+            }
+            else {
+                res.status(200).json(new DataResponse_1.default(200, userByEmail.message, userByEmail.data));
+            }
+        });
+    }
+    // [POST]: addUser
+    addUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const reponseService = yield UsersService_1.default.addUser(req.body);
+            if (reponseService.errorCode === ErrorsCode_1.ERROR_CODE.FAILED) {
+                res.status(200).json(new DataResponse_1.default(200, reponseService.message, reponseService.data));
+            }
+            else {
+                res.status(200).json(new DataResponse_1.default(200, reponseService.message, reponseService.data));
+            }
+        });
+    }
+    // [DELETE]: removeUser
+    removeUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const id = String(req.params.id);
+            const reponseService = yield UsersService_1.default.removeUser(id);
+            if (reponseService.errorCode === ErrorsCode_1.ERROR_CODE.FAILED) {
+                res.status(200).json(new DataResponse_1.default(200, reponseService.message, reponseService.data));
+            }
+            else {
+                res.status(200).json(new DataResponse_1.default(200, reponseService.message, reponseService.data));
+            }
+        });
     }
 }
 exports.default = new UserController();

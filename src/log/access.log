@@ -1,0 +1,4 @@
+::1 - - [27/Nov/2022:07:06:08 +0000] "GET /api-users/getAllUsers HTTP/1.1" 200 976
+::1 - - [27/Nov/2022:07:06:18 +0000] "GET /api-users/getAllUsers HTTP/1.1" 403 9
+::1 - - [27/Nov/2022:07:06:41 +0000] "GET /api-users/getAllUsers HTTP/1.1" 403 9
+::1 - - [27/Nov/2022:07:06:48 +0000] "GET /api-users/getAllUsers HTTP/1.1" 200 976

@@ -12,8 +12,6 @@ const app = express();
 app.use(bodyParser.json());
 
 // [LOGGER]
-/** 
- * Print Logger
 app.use(
   morgan("common", {
     stream: fs.createWriteStream(path.join(__dirname, "log/access.log"), {
@@ -22,10 +20,9 @@ app.use(
   })
 );
 
-*/
-
 // [LOGGER COMBINED]
-app.use(morgan('combined'));
+// app.use(morgan('combined'));
+
 // [CORS]
 app.use(cors({ origin: '*' }));
 

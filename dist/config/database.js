@@ -12,9 +12,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose = require("mongoose");
 function ConnectMongoDb() {
     return __awaiter(this, void 0, void 0, function* () {
-        mongoose.connect(process.env.MONGODB_URL, () => {
-            console.log("connected");
-        });
+        try {
+            yield mongoose.connect(process.env.MONGODB_URL, () => {
+                console.log('--> Connected to MongoDB <--');
+            });
+        }
+        catch (error) {
+            console.log('error mongoose', error);
+        }
     });
 }
 exports.default = ConnectMongoDb;

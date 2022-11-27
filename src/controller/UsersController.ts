@@ -44,10 +44,10 @@ class UserController {
     const id = String(req.params.id);
     const reponseService = await UsersService.removeUser(id);
     if (reponseService.errorCode === ERROR_CODE.FAILED) {
-        res.status(200).json(new DataResponse(200, reponseService.message, reponseService.data));
-      } else {
-        res.status(200).json(new DataResponse(200, reponseService.message, reponseService.data));
-      }
+      res.status(200).json(new DataResponse(200, reponseService.message, reponseService.data));
+    } else {
+      res.status(200).json(new DataResponse(200, reponseService.message, reponseService.data));
+    }
   }
 }
 export default new UserController();

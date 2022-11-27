@@ -58,6 +58,23 @@ class UserService {
       return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Dont found user', data: null });
     }
   }
+  async getUserByEmailAuth(email: any) {
+    try {
+      const user = await UserModel.findOne({ email: email });
+      const userDto = {
+        _id: String(user._id),
+        fullName: String(user.fullName),
+        email: String(user.email),
+        age: String(user.age),
+        address: String(user.address),
+        phoneNumber: String(user.phoneNumber),
+        password: String(user.password)
+      };
+      return ErrorResponse({ errorCode: ERROR_CODE.SUCCESSFULLY, message: 'Successfully', data: userDto });
+    } catch (error) {
+      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Dont found user', data: null });
+    }
+  }
 
   async addUser(user: IUser) {
     const newUser = new UserModel(user);
@@ -76,15 +93,15 @@ class UserService {
     } catch (error) {
       return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Failed create new user !', data: null });
     }
-}
-async removeUser(id: any) {
+  }
+  async removeUser(id: any) {
     console.log(id);
     try {
-        const userFindById = await UserModel.findOne({ _id: id });
-        await UserModel.deleteOne({ _id: id });
-        return ErrorResponse({ errorCode: ERROR_CODE.SUCCESSFULLY, message: `Remove User ${userFindById.fullName} Successfully`, data: null });
+      const userFindById = await UserModel.findOne({ _id: id });
+      await UserModel.deleteOne({ _id: id });
+      return ErrorResponse({ errorCode: ERROR_CODE.SUCCESSFULLY, message: `Remove User ${userFindById.fullName} Successfully`, data: null });
     } catch (error) {
-        return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Failed remove user !', data: null });
+      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Failed remove user !', data: null });
     }
   }
 }

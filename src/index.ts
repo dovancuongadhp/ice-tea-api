@@ -47,38 +47,6 @@ app.use(function(req, res, next) {
     next();
 });
 
-const productList = [
-  {
-    id: 1,
-    name: 'iphone 14',
-    price: '200$'
-  },
-  {
-    id: 2,
-    name: 'Macbook pro',
-    price: '300$'
-  }
-];
-
-
-
-app.get('/productList', authenToken, (req, res) => {
-  res.json({ status: 200, data: productList });
-});
-
-function authenToken(req : any, res : any, next : any) {
-  const authorizationHeader = req.headers['authorization'];
-  // Beaer [Token] 
-  const token = authorizationHeader.split(' ')[1];
-  if (!token) res.sendStatus(401);
-
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err : any, data : any) => {
-    console.log(err, data);
-    if (err) res.sendStatus(403);
-    next();
-  });
-}
-
 app.listen(process.env.PORT, () => {
   console.log('The application is listening on port 8000!');
 });

@@ -5,24 +5,20 @@ const morgan = require("morgan");
 const bodyParser = require("body-parser");
 const index_1 = require("./routers/index");
 const cors = require("cors");
+const fs = require("fs");
+const path = require("path");
 const dotenv = require("dotenv");
 const database_1 = require("./config/database");
 const app = express();
 app.use(bodyParser.json());
 // [LOGGER]
-/**
- * Print Logger
-app.use(
-  morgan("common", {
+app.use(morgan("common", {
     stream: fs.createWriteStream(path.join(__dirname, "log/access.log"), {
-      flags: "a",
+        flags: "a",
     }),
-  })
-);
-
-*/
+}));
 // [LOGGER COMBINED]
-app.use(morgan('combined'));
+// app.use(morgan('combined'));
 // [CORS]
 app.use(cors({ origin: '*' }));
 // [ROUTERS]

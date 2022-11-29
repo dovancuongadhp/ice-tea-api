@@ -26,15 +26,16 @@ app.use(cors({ origin: '*' }));
 dotenv.config();
 // [CONNECT MONGODB]
 (0, database_1.default)();
-// ------------JWT-----------
+// ------------JWT ------------
 let refreshTokenArr = [];
+console.log(refreshTokenArr);
 // login
 app.post('/login', function (req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const { email, password } = req.body;
         // Validate user input
         if (!(email && password)) {
-            res.status(400).send('All input is required');
+            return res.status(400).send('All input is required');
         }
         // find user by email
         const userFindByEmail = yield UsersService_1.default.getUserByEmailAuth(email);
@@ -47,7 +48,7 @@ app.post('/login', function (req, res) {
         }
         else {
             console.log('Email & Password does not match');
-            res.status(401).json(new DataResponse_1.default(401, 'Unregisterd user', null));
+            return res.status(401).json(new DataResponse_1.default(401, 'Unregisterd user', null));
         }
     });
 });

@@ -19,16 +19,17 @@ dotenv.config();
 // [CONNECT MONGODB]
 ConnectMongoDb();
 
-// ------------JWT-----------
+// ------------JWT ------------
 
 let refreshTokenArr = [];
+console.log(refreshTokenArr)
 
 // login
 app.post('/login', async function (req, res) {
   const { email, password } = req.body;
   // Validate user input
   if (!(email && password)) {
-    res.status(400).send('All input is required');
+    return res.status(400).send('All input is required');
   }
   // find user by email
   const userFindByEmail = await UsersService.getUserByEmailAuth(email);
@@ -41,7 +42,7 @@ app.post('/login', async function (req, res) {
     return res.json({ access_token, refresh_token });
   } else {
     console.log('Email & Password does not match');
-    res.status(401).json(new DataResponse(401, 'Unregisterd user', null));
+    return res.status(401).json(new DataResponse(401, 'Unregisterd user', null));
   }
 });
 

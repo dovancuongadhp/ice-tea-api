@@ -5,4 +5,5 @@ export interface UserDto {
     email : string | unknown ;
     address : string | unknown;
     phoneNumber : string | unknown;
+    role : string | number;
 } 

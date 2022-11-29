@@ -7,5 +7,6 @@ const User = new Schema({
   address: String,
   phoneNumber: String,
   password : {type: String, required : [true,"password must be require"]},
+  role: {type:String,require: true}
 });
 export default mongoose.model("User", User);

@@ -5,7 +5,7 @@ const RefreshToken = new Schema({
     token: String,
     expires: Date,
     created: { type: Date, default: Date.now },
-    revoked: Date,
+    revoked: Number,
     replacedByToken: String
 })
 export default mongoose.model("RefreshTokenModel",RefreshToken)

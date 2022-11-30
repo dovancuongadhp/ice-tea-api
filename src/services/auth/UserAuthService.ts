@@ -6,7 +6,6 @@ import { ERROR_CODE } from '../../types/ErrorsCode';
 class UserAuthService {
   async authenticate({ email, password }: any) {
     const user = await UserModel.findOne({ email });
-    console.log("data user find",user,password)
     if (!(email && password)) {
       return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'All input is required', data: null });
     }
@@ -33,28 +32,91 @@ class UserAuthService {
       console.log('Save refresh_token error', error);
       return error;
     }
+    return ErrorResponse({
+      errorCode: ERROR_CODE.SUCCESSFULLY,
+      message: 'Get access_token & refresh_token successfully',
+      data: {
+        access_token: jwtToken,
+        refresh_token: refreshToken
+      }
+    });
+  }
+  async refreshToken({ token }: any) {
+    try {
+      // find refreshTokenCurrent in record
+      const refreshTokenCurrent = await this.getRefreshToken(token);
+      const { user } = refreshTokenCurrent;
 
-    return {
-      access_token: jwtToken,
-      refresh_token: refreshToken
-    };
+      const new_refresh_token = this.generateRefreshToken(user);
+
+      // replace old refresh token with a new one and save
+      refreshTokenCurrent.revoked = Date.now();
+      refreshTokenCurrent.replacedByToken = new_refresh_token;
+      await refreshTokenCurrent.save();
+
+      // save refresh token new record
+      const newRecordRefreshToken = new RefreshTokenModel({
+        user: user._id,
+        token: new_refresh_token,
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+      });
+      await newRecordRefreshToken.save();
+
+      const jwtToken = this.generateJwtToken(user);
+      return ErrorResponse({
+        errorCode: ERROR_CODE.SUCCESSFULLY,
+        message: 'Refresh_token successfully',
+        data: {
+          access_token: jwtToken,
+          refresh_token: new_refresh_token
+        }
+      });
+    } catch (error) {
+      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: error, data: null });
+    }
   }
   async revokeToken({ token }: any) {
-    // find refreshToken in record
-    const refreshToken = await this.getRefreshToken(token);
-    refreshToken.revoked = Date.now();
-    await refreshToken.save();
+    try {
+      // find refreshToken in record
+      const refreshToken = await this.getRefreshToken(token);
+      // destroy in time
+      refreshToken.revoked = Date.now();
+      refreshToken.token = null;
+      await refreshToken.save();
+      return ErrorResponse({
+        errorCode: ERROR_CODE.SUCCESSFULLY,
+        message: 'Logout successfully',
+        data: null
+      });
+    } catch (error) {
+      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: error, data: null });
+    }
   }
+
+  async removeAllRefreshToken({ token }: any) {
+    try {
+      // find refreshTokenCurrent in record
+      const refreshTokenCurrent = await this.getRefreshToken(token);
+      const { user } = refreshTokenCurrent;
+      const userId = user._id;
+      const userDeleteAllToken = await RefreshTokenModel.deleteMany({ user: user._id });
+      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: `Remove All Token Successfully ${userId}`, data: null });
+    } catch (error) {
+      console.log(error);
+      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: error, data: null });
+    }
+  }
+
   async getRefreshTokens(userId: any) {
     // check that user exists
-    const user = await this.getUser(userId);
+    await this.getUser(userId);
 
     // return refresh tokens for user
     const refreshToken = await RefreshTokenModel.find({ user: userId });
     return refreshToken;
   }
 
-  // helper functions
+  // -------helper functions-------
 
   async getUser(userId: any) {
     const user = await UserModel.findById({ _id: userId });
@@ -63,7 +125,7 @@ class UserAuthService {
   }
   async getRefreshToken(token: any) {
     // find refreshToken in record
-    const refreshToken = await (await RefreshTokenModel.findOne({ token })).populated('user');
+    const refreshToken = await RefreshTokenModel.findOne({ token }).populate('user');
     if (!refreshToken) throw 'Invalid token';
     return refreshToken;
   }

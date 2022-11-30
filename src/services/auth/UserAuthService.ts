@@ -6,7 +6,6 @@ import { ERROR_CODE } from '../../types/ErrorsCode';
 class UserAuthService {
   async authenticate({ email, password }: any) {
     const user = await UserModel.findOne({ email });
-    console.log("data user find",user,password)
     if (!(email && password)) {
       return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'All input is required', data: null });
     }
@@ -39,22 +38,49 @@ class UserAuthService {
       refresh_token: refreshToken
     };
   }
+  async refreshToken({ token } : any) {
+    // find refreshTokenOld in record
+    const refreshToken = await this.getRefreshToken(token);
+    const { user } = refreshToken;
+    const new_refresh_token = this.generateRefreshToken(user);
+
+    // replace old refresh token with a new one and save
+    refreshToken.revoked = Date.now();
+    refreshToken.replacedByToken = new_refresh_token;
+    await refreshToken.save();
+
+    // save refresh token new record
+    const newRecordRefreshToken = new RefreshTokenModel({
+      user: user._id,
+      token: new_refresh_token,
+      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    });
+    await newRecordRefreshToken.save();
+
+    const jwtToken = this.generateJwtToken(user);
+    return {
+      access_token: jwtToken,
+      refresh_token: new_refresh_token
+    };
+  }
   async revokeToken({ token }: any) {
     // find refreshToken in record
     const refreshToken = await this.getRefreshToken(token);
+    // destroy in time
     refreshToken.revoked = Date.now();
     await refreshToken.save();
   }
   async getRefreshTokens(userId: any) {
     // check that user exists
-    const user = await this.getUser(userId);
+    await this.getUser(userId);
 
     // return refresh tokens for user
     const refreshToken = await RefreshTokenModel.find({ user: userId });
     return refreshToken;
   }
 
-  // helper functions
+
+  // -------helper functions-------
 
   async getUser(userId: any) {
     const user = await UserModel.findById({ _id: userId });
@@ -63,7 +89,7 @@ class UserAuthService {
   }
   async getRefreshToken(token: any) {
     // find refreshToken in record
-    const refreshToken = await (await RefreshTokenModel.findOne({ token })).populated('user');
+    const refreshToken = await RefreshTokenModel.findOne({ token }).populate('user')
     if (!refreshToken) throw 'Invalid token';
     return refreshToken;
   }

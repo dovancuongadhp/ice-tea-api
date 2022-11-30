@@ -13,7 +13,15 @@ class AuthController {
       res.status(200).json(new DataResponse(200, response.message, response));
     }
   }
-  async logout(req: Request, res: Response, next: any) {}
-  async refreshToken(req: Request, res: Response, next: any) {}
+  async logout(req: Request, res: Response, next: any) {
+    const {token} = req.body;
+
+  }
+  async refreshToken(req: Request, res: Response, next: any) {
+    const {token} = req.body;
+    const response = await UserAuthService.refreshToken({token})
+    return null;
+
+  }
 }
 export default new AuthController();

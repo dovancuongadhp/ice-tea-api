@@ -7,7 +7,7 @@
     "build": "tsc",
     "dev": "nodemon --exec ts-node ./src/index.ts",
     "start": "nodemon ./dist/index.js",
-    "startAuthServer" : "nodemon --exec ts-node ./src/authServer.ts",
+    "startSocketServer": "nodemon --exec ts-node ./src/socketServer.ts",
     "prod": "npm run build && npm run start",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -23,7 +23,8 @@
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.10.0",
     "mongoose": "^6.6.5",
-    "morgan": "^1.9.3"
+    "morgan": "^1.9.3",
+    "socket.io": "^4.5.4"
   },
   "devDependencies": {
     "@types/cors": "^2.8.12",

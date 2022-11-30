@@ -12,13 +12,13 @@ const app = express();
 app.use(bodyParser.json());
 
 // [LOGGER]
-app.use(
-  morgan("common", {
-    stream: fs.createWriteStream(path.join(__dirname, "log/access.log"), {
-      flags: "a",
-    }),
-  })
-);
+// app.use(
+//   morgan("common", {
+//     stream: fs.createWriteStream(path.join(__dirname, "log/access.log"), {
+//       flags: "a",
+//     }),
+//   })
+// );
 
 // [CORS]
 app.use(cors({ origin: '*' }));
@@ -40,7 +40,7 @@ app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Credentials', 'true');
     next();
 });
- 
+
 app.listen(process.env.PORT, () => {
   console.log('The application is listening on port 8000!');
 });

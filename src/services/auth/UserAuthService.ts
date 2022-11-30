@@ -32,44 +32,81 @@ class UserAuthService {
       console.log('Save refresh_token error', error);
       return error;
     }
-
-    return {
-      access_token: jwtToken,
-      refresh_token: refreshToken
-    };
-  }
-  async refreshToken({ token } : any) {
-    // find refreshTokenOld in record
-    const refreshToken = await this.getRefreshToken(token);
-    const { user } = refreshToken;
-    const new_refresh_token = this.generateRefreshToken(user);
-
-    // replace old refresh token with a new one and save
-    refreshToken.revoked = Date.now();
-    refreshToken.replacedByToken = new_refresh_token;
-    await refreshToken.save();
-
-    // save refresh token new record
-    const newRecordRefreshToken = new RefreshTokenModel({
-      user: user._id,
-      token: new_refresh_token,
-      expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+    return ErrorResponse({
+      errorCode: ERROR_CODE.SUCCESSFULLY,
+      message: 'Get access_token & refresh_token successfully',
+      data: {
+        access_token: jwtToken,
+        refresh_token: refreshToken
+      }
     });
-    await newRecordRefreshToken.save();
+  }
+  async refreshToken({ token }: any) {
+    try {
+      // find refreshTokenCurrent in record
+      const refreshTokenCurrent = await this.getRefreshToken(token);
+      const { user } = refreshTokenCurrent;
 
-    const jwtToken = this.generateJwtToken(user);
-    return {
-      access_token: jwtToken,
-      refresh_token: new_refresh_token
-    };
+      const new_refresh_token = this.generateRefreshToken(user);
+
+      // replace old refresh token with a new one and save
+      refreshTokenCurrent.revoked = Date.now();
+      refreshTokenCurrent.replacedByToken = new_refresh_token;
+      await refreshTokenCurrent.save();
+
+      // save refresh token new record
+      const newRecordRefreshToken = new RefreshTokenModel({
+        user: user._id,
+        token: new_refresh_token,
+        expires: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000)
+      });
+      await newRecordRefreshToken.save();
+
+      const jwtToken = this.generateJwtToken(user);
+      return ErrorResponse({
+        errorCode: ERROR_CODE.SUCCESSFULLY,
+        message: 'Refresh_token successfully',
+        data: {
+          access_token: jwtToken,
+          refresh_token: new_refresh_token
+        }
+      });
+    } catch (error) {
+      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: error, data: null });
+    }
   }
   async revokeToken({ token }: any) {
-    // find refreshToken in record
-    const refreshToken = await this.getRefreshToken(token);
-    // destroy in time
-    refreshToken.revoked = Date.now();
-    await refreshToken.save();
+    try {
+      // find refreshToken in record
+      const refreshToken = await this.getRefreshToken(token);
+      // destroy in time
+      refreshToken.revoked = Date.now();
+      refreshToken.token = null;
+      await refreshToken.save();
+      return ErrorResponse({
+        errorCode: ERROR_CODE.SUCCESSFULLY,
+        message: 'Logout successfully',
+        data: null
+      });
+    } catch (error) {
+      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: error, data: null });
+    }
   }
+
+  async removeAllRefreshToken({ token }: any) {
+    try {
+      // find refreshTokenCurrent in record
+      const refreshTokenCurrent = await this.getRefreshToken(token);
+      const { user } = refreshTokenCurrent;
+      const userId = user._id;
+      const userDeleteAllToken = await RefreshTokenModel.deleteMany({ user: user._id });
+      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: `Remove All Token Successfully ${userId}`, data: null });
+    } catch (error) {
+      console.log(error);
+      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: error, data: null });
+    }
+  }
+
   async getRefreshTokens(userId: any) {
     // check that user exists
     await this.getUser(userId);
@@ -78,7 +115,6 @@ class UserAuthService {
     const refreshToken = await RefreshTokenModel.find({ user: userId });
     return refreshToken;
   }
-
 
   // -------helper functions-------
 
@@ -89,7 +125,7 @@ class UserAuthService {
   }
   async getRefreshToken(token: any) {
     // find refreshToken in record
-    const refreshToken = await RefreshTokenModel.findOne({ token }).populate('user')
+    const refreshToken = await RefreshTokenModel.findOne({ token }).populate('user');
     if (!refreshToken) throw 'Invalid token';
     return refreshToken;
   }

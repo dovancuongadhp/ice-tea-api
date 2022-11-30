@@ -8,20 +8,37 @@ class AuthController {
     const { email, password } = req.body;
     const response = await UserAuthService.authenticate({ email, password });
     if (response.errorCode === ERROR_CODE.FAILED) {
-      res.status(403).json(new DataResponse(403, response.message, 'Forbidden'));
+      res.status(403).json(new DataResponse(403, response.message, response.data));
     } else {
-      res.status(200).json(new DataResponse(200, response.message, response));
+      res.status(200).json(new DataResponse(200, response.message, response.data));
     }
   }
   async logout(req: Request, res: Response, next: any) {
-    const {token} = req.body;
-
+    const { token } = req.body;
+    const response = await UserAuthService.revokeToken({ token });
+    if (response.errorCode === ERROR_CODE.FAILED) {
+      res.status(403).json(new DataResponse(200, response.message, response.data));
+    } else {
+      res.status(200).json(new DataResponse(200, response.message, response.data));
+    }
+  }
+  async logoutAll(req: Request, res: Response, next: any) {
+    const { token } = req.body;
+    const response = await UserAuthService.removeAllRefreshToken({ token });
+    if (response.errorCode === ERROR_CODE.FAILED) {
+      res.status(403).json(new DataResponse(200, response.message, response.data));
+    } else {
+      res.status(200).json(new DataResponse(200, response.message, response.data));
+    }
   }
   async refreshToken(req: Request, res: Response, next: any) {
-    const {token} = req.body;
-    const response = await UserAuthService.refreshToken({token})
-    return null;
-
+    const { token } = req.body;
+    const response = await UserAuthService.refreshToken({ token });
+    if (response.errorCode === ERROR_CODE.FAILED) {
+      res.status(403).json(new DataResponse(403, response.message, response.data));
+    } else {
+      res.status(200).json(new DataResponse(200, response.message, response.data));
+    }
   }
 }
 export default new AuthController();

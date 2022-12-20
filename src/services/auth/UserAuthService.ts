@@ -1,11 +1,16 @@
 import * as jwt from 'jsonwebtoken';
 import ErrorResponse from '../../models/ErrorResponse';
 import RefreshTokenModel from '../../models/RefreshTokenModel';
-import UserModel from '../../models/UserModel';
 import { ERROR_CODE } from '../../types/ErrorsCode';
+import UsersRepository from '../../repositories/UsersRepository';
+import DIContainer from '../../repositories';
 class UserAuthService {
+  private readonly userRepository: UsersRepository;
+  constructor() {
+    this.userRepository = DIContainer().usersRepository();
+  }
   async authenticate({ email, password }: any) {
-    const user = await UserModel.findOne({ email });
+    const user = await this.userRepository.findByEmail(email);
     if (!(email && password)) {
       return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'All input is required', data: null });
     }
@@ -119,7 +124,8 @@ class UserAuthService {
   // -------helper functions-------
 
   async getUser(userId: any) {
-    const user = await UserModel.findById({ _id: userId });
+    const _id = userId;
+    const user = await this.userRepository.findById(_id);
     if (!user) throw 'User not found';
     return user;
   }

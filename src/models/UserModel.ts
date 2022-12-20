@@ -1,12 +1,18 @@
-import mongoose, { Schema } from "mongoose";
-
-const User = new Schema({
-  fullName: {type: String, required : [true,"fullName must be require"]},
-  email : {type: String, required : [true,"email must be require"],unique : true},
-  age: Number,
-  address: String,
-  phoneNumber: String,
-  password : {type: String, required : [true,"password must be require"]},
-  role: {type:String,require: true}
-});
-export default mongoose.model("User", User);
+export default class UserModel {
+  private fullName: string;
+  private email: string;
+  private age: number;
+  private address: string;
+  private phoneNumber: string;
+  private password: string;
+  private role: string;
+  constructor(fullName: string, email: string, age: number, address: string, phoneNumber: string, password: string, role: string) {
+    this.fullName = fullName;
+    this.email = email;
+    this.age = age;
+    this.address = address;
+    this.phoneNumber = phoneNumber;
+    this.password = password;
+    this.role = role;
+  }
+}

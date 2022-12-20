@@ -1,13 +1,17 @@
 import { IUser, USER_ROLE_TYPES } from './types';
-import UserModel from '../models/UserModel';
 import { UserDto } from 'dto/UserDto';
 import ErrorResponse from '../models/ErrorResponse';
 import { ERROR_CODE } from '../types/ErrorsCode';
+import DIContainer from '../repositories';
+import UsersRepository from 'repositories/UsersRepository';
 class UserService {
-  constructor() {}
+  private readonly userRepository: UsersRepository;
+  constructor() {
+    this.userRepository = DIContainer().usersRepository();
+  }
 
   async getAllUsers(): Promise<UserDto[]> {
-    const listUsers = await UserModel.find().exec();
+    const listUsers = await this.userRepository.find();
     const listUsersDto = listUsers.map((user) => {
       return {
         _id: String(user._id),
@@ -22,9 +26,9 @@ class UserService {
     return listUsersDto;
   }
 
-  async getUserById(id: any) {
+  async getUserById(_id: any) {
     try {
-      const user = await UserModel.findById({ _id: id });
+      const user = await this.userRepository.findById(_id);
       const userDto: UserDto = {
         _id: String(user._id),
         fullName: String(user.fullName),
@@ -36,17 +40,13 @@ class UserService {
       };
       return ErrorResponse({ errorCode: ERROR_CODE.SUCCESSFULLY, message: 'Successfully', data: userDto });
     } catch (error) {
-      return ErrorResponse({
-        errorCode: ERROR_CODE.FAILED,
-        message: 'Dont found user',
-        data: null
-      });
+      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Dont found user !', data: null });
     }
   }
 
   async getUserByEmail(email: any) {
     try {
-      const user = await UserModel.findOne({ email: email });
+      const user = await this.userRepository.findByEmail(email);
       const userDto: UserDto = {
         _id: String(user._id),
         fullName: String(user.fullName),
@@ -58,14 +58,14 @@ class UserService {
       };
       return ErrorResponse({ errorCode: ERROR_CODE.SUCCESSFULLY, message: 'Successfully', data: userDto });
     } catch (error) {
-      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Dont found user', data: null });
+      return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Dont found user !', data: null });
     }
   }
-  
+
   async addUser(user: IUser) {
-    const newUser = new UserModel({...user,role:String(USER_ROLE_TYPES.USER)})
+    const newUser = { ...user, role: String(USER_ROLE_TYPES.USER) };
     try {
-      await newUser.save();
+      await this.userRepository.create(newUser);
       //oke
       const userDto = {
         _id: String(newUser._id),
@@ -82,12 +82,10 @@ class UserService {
     }
   }
 
-  async removeUser(id: any) {
-    console.log(id);
+  async removeUser(_id: any) {
     try {
-      const userFindById = await UserModel.findOne({ _id: id });
-      await UserModel.deleteOne({ _id: id });
-      return ErrorResponse({ errorCode: ERROR_CODE.SUCCESSFULLY, message: `Remove User ${userFindById.fullName} Successfully`, data: null });
+      await this.userRepository.delete(_id);
+      return ErrorResponse({ errorCode: ERROR_CODE.SUCCESSFULLY, message: `Remove user successfully`, data: null });
     } catch (error) {
       return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Failed remove user !', data: null });
     }

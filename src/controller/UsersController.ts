@@ -12,8 +12,8 @@ class UserController {
   }
   // [GET]: getUserById
   async getUserById(req: Request, res: Response) {
-    const id = String(req.params.id);
-    const userById = await UsersService.getUserById(id);
+    const _id = String(req.params.id);
+    const userById = await UsersService.getUserById(_id);
     if (userById.errorCode === ERROR_CODE.FAILED) {
       res.status(200).json(new DataResponse(200, userById.message, userById.data));
     } else {
@@ -41,8 +41,8 @@ class UserController {
   }
   // [DELETE]: removeUser
   async removeUser(req: Request, res: Response) {
-    const id = String(req.params.id);
-    const reponseService = await UsersService.removeUser(id);
+    const _id = String(req.params.id);
+    const reponseService = await UsersService.removeUser(_id);
     if (reponseService.errorCode === ERROR_CODE.FAILED) {
       res.status(200).json(new DataResponse(200, reponseService.message, reponseService.data));
     } else {

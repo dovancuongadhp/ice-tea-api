@@ -24,8 +24,8 @@ class UserController {
     // [GET]: getUserById
     getUserById(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = String(req.params.id);
-            const userById = yield UsersService_1.default.getUserById(id);
+            const _id = String(req.params.id);
+            const userById = yield UsersService_1.default.getUserById(_id);
             if (userById.errorCode === ErrorsCode_1.ERROR_CODE.FAILED) {
                 res.status(200).json(new DataResponse_1.default(200, userById.message, userById.data));
             }
@@ -62,8 +62,8 @@ class UserController {
     // [DELETE]: removeUser
     removeUser(req, res) {
         return __awaiter(this, void 0, void 0, function* () {
-            const id = String(req.params.id);
-            const reponseService = yield UsersService_1.default.removeUser(id);
+            const _id = String(req.params.id);
+            const reponseService = yield UsersService_1.default.removeUser(_id);
             if (reponseService.errorCode === ErrorsCode_1.ERROR_CODE.FAILED) {
                 res.status(200).json(new DataResponse_1.default(200, reponseService.message, reponseService.data));
             }

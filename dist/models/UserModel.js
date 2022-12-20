@@ -1,13 +1,15 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = require("mongoose");
-const User = new mongoose_1.Schema({
-    fullName: { type: String, required: [true, "fullName must be require"] },
-    email: { type: String, required: [true, "email must be require"], unique: true },
-    age: Number,
-    address: String,
-    phoneNumber: String,
-    password: { type: String, required: [true, "password must be require"] },
-});
-exports.default = mongoose_1.default.model("User", User);
+class UserModel {
+    constructor(fullName, email, age, address, phoneNumber, password, role) {
+        this.fullName = fullName;
+        this.email = email;
+        this.age = age;
+        this.address = address;
+        this.phoneNumber = phoneNumber;
+        this.password = password;
+        this.role = role;
+    }
+}
+exports.default = UserModel;
 //# sourceMappingURL=UserModel.js.map

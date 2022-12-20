@@ -9,73 +9,35 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const UserModel_1 = require("../models/UserModel");
+const types_1 = require("./types");
 const ErrorResponse_1 = require("../models/ErrorResponse");
 const ErrorsCode_1 = require("../types/ErrorsCode");
+const repositories_1 = require("../repositories");
 class UserService {
-    constructor() { }
+    constructor() {
+        this.userRepository = (0, repositories_1.default)().usersRepository();
+    }
     getAllUsers() {
         return __awaiter(this, void 0, void 0, function* () {
-            const listUsers = yield UserModel_1.default.find().exec();
+            const listUsers = yield this.userRepository.find();
             const listUsersDto = listUsers.map((user) => {
                 return {
                     _id: String(user._id),
-                    fullName: user.fullName,
-                    age: user.age,
-                    email: user.email,
-                    address: user.address,
-                    phoneNumber: user.phoneNumber
+                    fullName: String(user.fullName),
+                    email: String(user.email),
+                    age: String(user.age),
+                    address: String(user.address),
+                    phoneNumber: String(user.phoneNumber),
+                    role: String(user.role)
                 };
             });
             return listUsersDto;
         });
     }
-    getUserById(id) {
+    getUserById(_id) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                const user = yield UserModel_1.default.findById({ _id: id });
-                const userDto = {
-                    _id: String(user._id),
-                    fullName: String(user.fullName),
-                    email: String(user.email),
-                    age: String(user.age),
-                    address: String(user.address),
-                    phoneNumber: String(user.phoneNumber)
-                };
-                return (0, ErrorResponse_1.default)({ errorCode: ErrorsCode_1.ERROR_CODE.SUCCESSFULLY, message: 'Successfully', data: userDto });
-            }
-            catch (error) {
-                return (0, ErrorResponse_1.default)({
-                    errorCode: ErrorsCode_1.ERROR_CODE.FAILED,
-                    message: 'Dont found user',
-                    data: null
-                });
-            }
-        });
-    }
-    getUserByEmail(email) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const user = yield UserModel_1.default.findOne({ email: email });
-                const userDto = {
-                    _id: String(user._id),
-                    fullName: String(user.fullName),
-                    email: String(user.email),
-                    age: String(user.age),
-                    address: String(user.address),
-                    phoneNumber: String(user.phoneNumber)
-                };
-                return (0, ErrorResponse_1.default)({ errorCode: ErrorsCode_1.ERROR_CODE.SUCCESSFULLY, message: 'Successfully', data: userDto });
-            }
-            catch (error) {
-                return (0, ErrorResponse_1.default)({ errorCode: ErrorsCode_1.ERROR_CODE.FAILED, message: 'Dont found user', data: null });
-            }
-        });
-    }
-    getUserByEmailAuth(email) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                const user = yield UserModel_1.default.findOne({ email: email });
+                const user = yield this.userRepository.findById(_id);
                 const userDto = {
                     _id: String(user._id),
                     fullName: String(user.fullName),
@@ -83,20 +45,40 @@ class UserService {
                     age: String(user.age),
                     address: String(user.address),
                     phoneNumber: String(user.phoneNumber),
-                    password: String(user.password)
+                    role: String(user.role)
                 };
                 return (0, ErrorResponse_1.default)({ errorCode: ErrorsCode_1.ERROR_CODE.SUCCESSFULLY, message: 'Successfully', data: userDto });
             }
             catch (error) {
-                return (0, ErrorResponse_1.default)({ errorCode: ErrorsCode_1.ERROR_CODE.FAILED, message: 'Dont found user', data: null });
+                return (0, ErrorResponse_1.default)({ errorCode: ErrorsCode_1.ERROR_CODE.FAILED, message: 'Dont found user !', data: null });
+            }
+        });
+    }
+    getUserByEmail(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield this.userRepository.findByEmail(email);
+                const userDto = {
+                    _id: String(user._id),
+                    fullName: String(user.fullName),
+                    email: String(user.email),
+                    age: String(user.age),
+                    address: String(user.address),
+                    phoneNumber: String(user.phoneNumber),
+                    role: String(user.role)
+                };
+                return (0, ErrorResponse_1.default)({ errorCode: ErrorsCode_1.ERROR_CODE.SUCCESSFULLY, message: 'Successfully', data: userDto });
+            }
+            catch (error) {
+                return (0, ErrorResponse_1.default)({ errorCode: ErrorsCode_1.ERROR_CODE.FAILED, message: 'Dont found user !', data: null });
             }
         });
     }
     addUser(user) {
         return __awaiter(this, void 0, void 0, function* () {
-            const newUser = new UserModel_1.default(user);
+            const newUser = Object.assign(Object.assign({}, user), { role: String(types_1.USER_ROLE_TYPES.USER) });
             try {
-                yield newUser.save();
+                yield this.userRepository.create(newUser);
                 //oke
                 const userDto = {
                     _id: String(newUser._id),
@@ -104,7 +86,8 @@ class UserService {
                     email: String(newUser.email),
                     age: String(newUser.age),
                     address: String(newUser.address),
-                    phoneNumber: String(newUser.phoneNumber)
+                    phoneNumber: String(newUser.phoneNumber),
+                    role: String(newUser.role)
                 };
                 return (0, ErrorResponse_1.default)({ errorCode: ErrorsCode_1.ERROR_CODE.SUCCESSFULLY, message: 'Successfully', data: userDto });
             }
@@ -113,13 +96,11 @@ class UserService {
             }
         });
     }
-    removeUser(id) {
+    removeUser(_id) {
         return __awaiter(this, void 0, void 0, function* () {
-            console.log(id);
             try {
-                const userFindById = yield UserModel_1.default.findOne({ _id: id });
-                yield UserModel_1.default.deleteOne({ _id: id });
-                return (0, ErrorResponse_1.default)({ errorCode: ErrorsCode_1.ERROR_CODE.SUCCESSFULLY, message: `Remove User ${userFindById.fullName} Successfully`, data: null });
+                yield this.userRepository.delete(_id);
+                return (0, ErrorResponse_1.default)({ errorCode: ErrorsCode_1.ERROR_CODE.SUCCESSFULLY, message: `Remove user successfully`, data: null });
             }
             catch (error) {
                 return (0, ErrorResponse_1.default)({ errorCode: ErrorsCode_1.ERROR_CODE.FAILED, message: 'Failed remove user !', data: null });

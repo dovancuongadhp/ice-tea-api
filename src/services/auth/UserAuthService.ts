@@ -1,6 +1,6 @@
 import * as jwt from 'jsonwebtoken';
 import ErrorResponse from '../../models/ErrorResponse';
-import RefreshTokenModel from '../../models/RefreshTokenModel';
+import RefreshTokenModel from '../../entities/RefreshTokenModel';
 import { ERROR_CODE } from '../../types/ErrorsCode';
 import UsersRepository from '../../repositories/UsersRepository';
 import DIContainer from '../../repositories';

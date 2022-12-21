@@ -4,6 +4,7 @@ import RefreshTokenModel from '../../models/RefreshTokenModel';
 import { ERROR_CODE } from '../../types/ErrorsCode';
 import UsersRepository from '../../repositories/UsersRepository';
 import DIContainer from '../../repositories';
+
 class UserAuthService {
   private readonly userRepository: UsersRepository;
   constructor() {

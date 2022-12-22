@@ -1,5 +1,5 @@
-import { IWrite } from 'repositories/interfaces/Iwrite';
-import { IRead } from 'repositories/interfaces/IRead';
+import { IWrite } from '../interfaces/Iwrite';
+import { IRead } from '../interfaces/IRead';
 
 export abstract class BaseRepository<T> implements IWrite<T>, IRead<T> {
   public readonly _model: any;

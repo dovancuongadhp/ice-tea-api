@@ -22,7 +22,7 @@ app.use(bodyParser.json());
 // );
 
 // [CORS]
-app.use(cors({ origin: '*' }));
+app.use(cors({ credentials: true, origin: 'http://localhost:4200' }));
 
 // [COOKIE]
 app.use(cookieParser());

@@ -19,7 +19,7 @@ class AuthController {
   }
   async logout(req: Request, res: Response, next: any) {
     // accept token from request body or cookie
-    const token = req.body.token || req.cookies.refreshToken;
+    const token = req.body.token || req.cookies.refresh_token;
     const response = await UserAuthService.revokeToken({ token });
     if (response.errorCode === ERROR_CODE.FAILED) {
       res.status(403).json(new DataResponse(200, response.message, response.data));

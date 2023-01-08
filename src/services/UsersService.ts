@@ -29,6 +29,9 @@ class UserService {
   async getUserById(_id: any) {
     try {
       const user = await this.userRepository.findById(_id);
+      if(user===null){
+        return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Dont found user !', data: null });
+      }
       const userDto: UserDto = {
         _id: String(user._id),
         fullName: String(user.fullName),
@@ -47,6 +50,9 @@ class UserService {
   async getUserByEmail(email: any) {
     try {
       const user = await this.userRepository.findByEmail(email);
+      if(user===null){
+        return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Dont found user !', data: null });
+      }
       const userDto: UserDto = {
         _id: String(user._id),
         fullName: String(user.fullName),

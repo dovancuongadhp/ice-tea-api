@@ -44,7 +44,9 @@ app.use(function (req, res, next) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   next();
 });
-
+app.get('/hello',(req,res)=>{
+    res.send('Hello World on port 8000')
+})
 app.listen(process.env.PORT, () => {
   console.log('The application is listening on port 8000!');
 });

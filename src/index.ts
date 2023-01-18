@@ -13,13 +13,13 @@ const app = express();
 app.use(bodyParser.json());
 
 // [LOGGER]
-// app.use(
-//   morgan('common', {
-//     stream: fs.createWriteStream(path.join(__dirname, 'log/access.log'), {
-//       flags: 'a'
-//     })
-//   })
-// );
+app.use(
+  morgan('common', {
+    stream: fs.createWriteStream(path.join(__dirname, 'log/access.log'), {
+      flags: 'a'
+    })
+  })
+);
 
 // [CORS]
 app.use(cors({ credentials: true, origin: 'http://localhost:4200' }));

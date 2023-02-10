@@ -1,1 +1,6 @@
 /node_modules
+/.fleet
+/dist
+
+# log
+/src/log

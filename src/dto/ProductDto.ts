@@ -1,6 +1,7 @@
-export default interface ProductModel {
+export default interface ProductDto {
+    _id : string | any | unknown;
     nameProduct: string,
-    price: number,
-    amount: number,
+    price: number | string,
+    amount: number | string,
     description: string
 }

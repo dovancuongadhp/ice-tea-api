@@ -12,7 +12,7 @@ class UserService {
 
   async getAllUsers(): Promise<UserDto[]> {
     const listUsers = await this.userRepository.find();
-    const listUsersDto = listUsers.map((user) => {
+    const listUsersDto: UserDto[] = listUsers.map((user) => {
       return {
         _id: String(user._id),
         fullName: String(user.fullName),
@@ -29,7 +29,7 @@ class UserService {
   async getUserById(_id: any) {
     try {
       const user = await this.userRepository.findById(_id);
-      if(user===null){
+      if (user === null) {
         return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Dont found user !', data: null });
       }
       const userDto: UserDto = {
@@ -50,7 +50,7 @@ class UserService {
   async getUserByEmail(email: any) {
     try {
       const user = await this.userRepository.findByEmail(email);
-      if(user===null){
+      if (user === null) {
         return ErrorResponse({ errorCode: ERROR_CODE.FAILED, message: 'Dont found user !', data: null });
       }
       const userDto: UserDto = {
@@ -73,7 +73,7 @@ class UserService {
     try {
       await this.userRepository.create(newUser);
       //oke
-      const userDto = {
+      const userDto: UserDto = {
         _id: String(newUser._id),
         fullName: String(newUser.fullName),
         email: String(newUser.email),

@@ -8,8 +8,8 @@ class UserController {
   constructor() {}
   // [GET]: getAllUsers
   async getListUser(req: Request, res: Response) {
-    const userList = await UsersService.getAllUsers();
-    res.status(HTTP_CODE.OK).json(new DataResponse(200, 'oke', userList));
+    const listUser = await UsersService.getAllUsers();
+    res.status(HTTP_CODE.OK).json(new DataResponse(200, 'oke', listUser));
   }
   // [GET]: getUserById
   async getUserById(req: Request, res: Response) {

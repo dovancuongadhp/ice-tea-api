@@ -12,10 +12,17 @@ import ConnectMongoDb from './config/database';
 const app = express();
 app.use(bodyParser.json());
 
+
+const logDirectory = path.join(__dirname, 'log');
+// Tạo thư mục nếu chưa tồn tại
+if (!fs.existsSync(logDirectory)) {
+  fs.mkdirSync(logDirectory);
+}
+
 // [LOGGER]
 app.use(
   morgan('common', {
-    stream: fs.createWriteStream(path.join(__dirname, 'log/access.log'), {
+    stream: fs.createWriteStream(path.join(logDirectory, 'access.log'), {
       flags: 'a'
     })
   })

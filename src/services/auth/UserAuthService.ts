@@ -141,7 +141,7 @@ class UserAuthService {
    *  -----------------------
    */
   generateJwtToken(user: any) {
-    return jwt.sign({ uid: user._id, email: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '15m' });
+    return jwt.sign({ uid: user._id, email: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30d' });
   }
 
   generateRefreshToken(user: any) {

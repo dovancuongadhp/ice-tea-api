@@ -2,12 +2,12 @@ import { IUser, USER_ROLE_TYPES } from './types';
 import { UserDto } from 'dto/UserDto';
 import ErrorResponse from '../models/ErrorResponse';
 import { ERROR_CODE } from '../types/ErrorsCode';
-import DIContainer from '../repositories';
+import ContainerRepo from '../repositories';
 import UsersRepository from 'repositories/UsersRepository';
 class UserService {
   private readonly userRepository: UsersRepository;
   constructor() {
-    this.userRepository = DIContainer().usersRepository();
+    this.userRepository = ContainerRepo().usersRepository();
   }
 
   async getAllUsers(): Promise<UserDto[]> {

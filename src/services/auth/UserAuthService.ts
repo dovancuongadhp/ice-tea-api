@@ -3,12 +3,12 @@ import ErrorResponse from '../../models/ErrorResponse';
 import RefreshTokenModel from '../../entities/RefreshTokenModel';
 import { ERROR_CODE } from '../../types/ErrorsCode';
 import UsersRepository from '../../repositories/UsersRepository';
-import DIContainer from '../../repositories';
+import ContainerRepo from '../../repositories';
 
 class UserAuthService {
   private readonly userRepository: UsersRepository;
   constructor() {
-    this.userRepository = DIContainer().usersRepository();
+    this.userRepository = ContainerRepo().usersRepository();
   }
   async authenticate({ email, password }: any) {
     const user = await this.userRepository.findByEmail(email);

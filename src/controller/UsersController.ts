@@ -3,13 +3,14 @@ import UsersService from '../services/UsersService';
 import DataResponse from '../models/DataResponse';
 import { ERROR_CODE } from '../types/ErrorsCode';
 import { HTTP_CODE } from '../types/HttpCode';
+import DataResponseList from '../models/DataResponseList';
 
 class UserController {
   constructor() {}
   // [GET]: getAllUsers
   async getListUser(req: Request, res: Response) {
     const listUser = await UsersService.getAllUsers();
-    res.status(HTTP_CODE.OK).json(new DataResponse(200, 'oke', listUser));
+    res.status(HTTP_CODE.OK).json(new DataResponseList(200, 'oke', listUser.length,listUser));
   }
   // [GET]: getUserById
   async getUserById(req: Request, res: Response) {

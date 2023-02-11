@@ -22,9 +22,9 @@ describe('product',()=>{
                 .get('/api-products/getAllProducts')
                 .end((err, res) => {
                     res.should.have.status(200);
-                    res.body.should.be.a('object');
+                 
                     res.body.should.have.property('message').eql('oke');
-                    res.body.should.have.property('status').eql(200);
+                    res.body.should.have.property('status').eql(200);   res.body.should.be.a('object');
                     res.body.data[0].should.have.property('price').eql("3000");
                     done();
                 });

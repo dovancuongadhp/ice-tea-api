@@ -4,11 +4,17 @@ import DataResponse from '../models/DataResponse';
 import { ERROR_CODE } from '../types/ErrorsCode';
 import { HTTP_CODE } from '../types/HttpCode';
 import DataResponseList from '../models/DataResponseList';
+interface CustomRequest extends Request {
+  // thêm trường uid và Request (bên middleware authenToken đã assign uid nếu verify thành công)
+  uid: string;
+}
 
 class UserController {
   constructor() {}
   // [GET]: getAllUsers
-  async getListUser(req: Request, res: Response) {
+  async getListUser(req: CustomRequest, res: Response) {
+    const uid = req.uid;
+    console.log(uid)
     const listUser = await UsersService.getAllUsers();
     res.status(HTTP_CODE.OK).json(new DataResponseList(200, 'oke', listUser.length,listUser));
   }

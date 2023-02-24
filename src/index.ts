@@ -12,6 +12,7 @@ import ConnectMongoDb from './config/database';
 const app = express();
 app.use(bodyParser.json());
 
+/* 
 
 const logDirectory = path.join(__dirname, 'log');
 // Tạo thư mục nếu chưa tồn tại
@@ -27,6 +28,8 @@ app.use(
     })
   })
 );
+
+*/
 
 // [CORS]
 app.use(cors({ credentials: true, origin: 'http://localhost:4200' }));

@@ -1,14 +1,16 @@
-import { Request, Response } from 'express';
+import { Request, Response, query } from 'express';
 import ProductsService from '../services/ProductsService';
 import { HTTP_CODE } from '../types/HttpCode';
 import DataResponse from '../models/DataResponse';
 import { ERROR_CODE } from '../types/ErrorsCode';
+import DataResponseList from '../models/DataResponseList';
 class ProductsController {
   constructor() {}
   // [GET]: getAllProducts
   async getListProduct(req: Request, res: Response) {
-    const listProduct = await ProductsService.getAllProducts();
-    res.status(HTTP_CODE.OK).json(new DataResponse(200, 'oke', listProduct));
+    const {page,pageSize} = req.query
+    const listProduct = await ProductsService.getAllProducts(page,pageSize);
+    res.status(HTTP_CODE.OK).json(new DataResponseList(200, 'oke', listProduct.length, listProduct));
   }
   // [GET]: getProductById
   async getProductById(req: Request, res: Response) {

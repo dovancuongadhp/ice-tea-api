@@ -3,14 +3,17 @@ import ContainerRepo from '../repositories';
 import ProductsRepository from 'repositories/ProductsRepository';
 import ErrorResponse from '../models/ErrorResponse';
 import { ERROR_CODE } from '../types/ErrorsCode';
+import Product from '../entities/Product';
 
 class ProductService {
   private readonly productRepository: ProductsRepository;
   constructor() {
     this.productRepository = ContainerRepo().productsRepository();
   }
-  async getAllProducts(): Promise<ProductDto[]> {
-    const listProduct = await this.productRepository.find();
+  async getAllProducts(page:any,pageSize:any): Promise<ProductDto[]> {
+    // const listProduct = await this.productRepository.find();
+    const skipRecord = (page*pageSize) - pageSize
+    const listProduct = await Product.find().skip(skipRecord).limit(pageSize || 10);
     const listProductDto: ProductDto[] = listProduct.map((product) => {
       return {
         _id: String(product._id),

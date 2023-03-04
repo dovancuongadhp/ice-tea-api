@@ -1,9 +1,9 @@
 import { IUser, USER_ROLE_TYPES } from './types';
-import { UserDto } from 'dto/UserDto';
+import { UserDto } from '../dto/UserDto';
 import ErrorResponse from '../models/ErrorResponse';
 import { ERROR_CODE } from '../types/ErrorsCode';
 import ContainerRepo from '../repositories';
-import UsersRepository from 'repositories/UsersRepository';
+import UsersRepository from '../repositories/UsersRepository';
 class UserService {
   private readonly userRepository: UsersRepository;
   constructor() {
@@ -12,7 +12,7 @@ class UserService {
 
   async getAllUsers(): Promise<UserDto[]> {
     const listUsers = await this.userRepository.find();
-    const listUsersDto: UserDto[] = listUsers.map((user) => {
+    const listUsersDto: UserDto[] = listUsers.map((user: any) => {
       return {
         _id: String(user._id),
         fullName: String(user.fullName),

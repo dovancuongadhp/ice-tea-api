@@ -1,6 +1,6 @@
 interface ErrorResponseType{
     errorCode: number;
-    message: string;
+    message: any;
     data : any;
 }
 export default function ErrorResponse({errorCode, message,data}: ErrorResponseType){

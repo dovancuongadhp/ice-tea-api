@@ -1,4 +1,5 @@
-import { Request, Response } from 'express';
+import {NextFunction, Request, Response } from 'express';
+// import CustomRequest from '../types/express'
 import UsersService from '../services/UsersService';
 import DataResponse from '../models/DataResponse';
 import { ERROR_CODE } from '../types/ErrorsCode';
@@ -18,7 +19,8 @@ interface CustomRequest extends Request {
 class UserController {
   constructor() {}
   // [GET]: getAllUsers
-  async getListUser(req: CustomRequest, res: Response) {
+  async getListUser(req: Request, res: Response) {
+    // console.log(req.uid)
     const listUser = await UsersService.getAllUsers();
     res.status(HTTP_CODE.OK).json(new DataResponseList(200, 'oke', listUser.length, listUser));
   }

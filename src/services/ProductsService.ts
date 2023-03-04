@@ -1,6 +1,6 @@
-import ProductDto from 'dto/ProductDto';
+import ProductDto from '../dto/ProductDto';
 import ContainerRepo from '../repositories';
-import ProductsRepository from 'repositories/ProductsRepository';
+import ProductsRepository from '../repositories/ProductsRepository';
 import ErrorResponse from '../models/ErrorResponse';
 import { ERROR_CODE } from '../types/ErrorsCode';
 import Product from '../entities/Product';

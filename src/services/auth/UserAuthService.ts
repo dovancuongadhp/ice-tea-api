@@ -50,7 +50,7 @@ class UserAuthService {
   async refreshToken({ token }: any) {
     try {
       // find refreshTokenCurrent in record
-      const refreshTokenCurrent = await this.getRefreshToken(token);
+      const refreshTokenCurrent:any = await this.getRefreshToken(token);
       const { user } = refreshTokenCurrent;
 
       const new_refresh_token = this.generateRefreshToken(user);
@@ -84,7 +84,7 @@ class UserAuthService {
   async revokeToken({ token }: any) {
     try {
       // find refreshToken in record
-      const refreshToken = await this.getRefreshToken(token);
+      const refreshToken:any = await this.getRefreshToken(token);
       // destroy in time
       refreshToken.revoked = Date.now();
       refreshToken.token = null;
@@ -102,7 +102,7 @@ class UserAuthService {
   async removeAllRefreshToken({ token }: any) {
     try {
       // find refreshTokenCurrent in record
-      const refreshTokenCurrent = await this.getRefreshToken(token);
+      const refreshTokenCurrent:any = await this.getRefreshToken(token);
       const { user } = refreshTokenCurrent;
       const userId = user._id;
       const userDeleteAllToken = await RefreshTokenModel.deleteMany({ user: user._id });
@@ -141,11 +141,11 @@ class UserAuthService {
    *  -----------------------
    */
   generateJwtToken(user: any) {
-    return jwt.sign({ uid: user._id, email: user.email }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '30d' });
+    return jwt.sign({ uid: user._id, email: user.email }, process.env.ACCESS_TOKEN_SECRET as string, { expiresIn: '30d' });
   }
 
   generateRefreshToken(user: any) {
-    return jwt.sign({ email: user.email }, process.env.REFRESH_TOKEN_SECRET);
+    return jwt.sign({ email: user.email }, process.env.REFRESH_TOKEN_SECRET as string);
   }
 }
 export default new UserAuthService();

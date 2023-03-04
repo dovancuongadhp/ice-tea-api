@@ -1,4 +1,4 @@
-import * as express from 'express';
+import express from 'express';
 import AuthController from '../controller/auth/AuthController';
 const AuthRouter = express.Router();
 // AuthRouter.use(authenToken);

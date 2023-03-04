@@ -1,4 +1,5 @@
-export function setTokenCookie(res, token)
+import { Response } from "express";
+export function setTokenCookie(res : Response, token:any)
 {
     // create http only cookie with refresh token that expires in 7 days
     const cookieOptions = {

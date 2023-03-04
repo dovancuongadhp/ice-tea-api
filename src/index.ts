@@ -1,62 +1,24 @@
-import * as express from 'express';
-import * as morgan from 'morgan';
-import * as bodyParser from 'body-parser';
-import AllRouter from './routers/index';
-import * as cors from 'cors';
-import * as fs from 'fs';
-import * as path from 'path';
-import * as dotenv from 'dotenv';
-import * as cookieParser from 'cookie-parser';
-import ConnectMongoDb from './config/database';
-
+import express from 'express';
+import appRoutes from './routers';
+import appConfig from './config';
+import Banner from './banner'
 const app = express();
-app.use(bodyParser.json());
+const port = process.env.PORT
 
-/* 
-
-const logDirectory = path.join(__dirname, 'log');
-// Tạo thư mục nếu chưa tồn tại
-if (!fs.existsSync(logDirectory)) {
-  fs.mkdirSync(logDirectory);
-}
-
-// [LOGGER]
-app.use(
-  morgan('common', {
-    stream: fs.createWriteStream(path.join(logDirectory, 'access.log'), {
-      flags: 'a'
-    })
-  })
-);
-
-*/
-
-// [CORS]
-app.use(cors({ credentials: true, origin: 'http://localhost:4200' }));
-
-// [COOKIE]
-app.use(cookieParser());
+// [CONFIG]
+appConfig(app)
 
 // [ROUTERS]
-AllRouter(app);
+appRoutes(app);
 
-// [.ENV]
-dotenv.config();
+// [BANNER]
+Banner();
 
-// [CONNECT MONGODB]
-ConnectMongoDb();
-
-// SET HEADERS
-app.use(function (req, res, next) {
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  next();
-});
 app.get('/hello',(req,res)=>{
     res.send('Hello World on port 8000')
 })
-app.listen(process.env.PORT, () => {
-  console.log('The application is listening on port 8000!');
+
+
+app.listen(port, () => {
+  console.log(`The application is listening on port ${port}`);
 });

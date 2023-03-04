@@ -1,7 +1,9 @@
 import UsersRouter from "./UsersRouter";
 import ProductsRouter from "./ProductsRouter";
 import AuthRouter from "./AuthRouter";
-export default function AllRouter(app) {
+import { Application } from "express";
+
+export default function appRouter(app: any) {
   // --> Mapping all Routers
   app.use("/api-users", UsersRouter);
   app.use("/api-products",ProductsRouter);

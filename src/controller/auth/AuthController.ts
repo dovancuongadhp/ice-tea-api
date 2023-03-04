@@ -8,7 +8,8 @@ class AuthController {
   constructor() {}
   async login(req: Request, res: Response, next: any) {
     const { email, password } = req.body;
-    const response = await UserAuthService.authenticate({ email, password });
+    const response:any = await UserAuthService.authenticate({ email, password });
+
     if (response.errorCode === ERROR_CODE.FAILED) {
       res.status(HTTP_CODE.FORBIDDEN).json(new DataResponse(403, response.message, response.data));
     } else {

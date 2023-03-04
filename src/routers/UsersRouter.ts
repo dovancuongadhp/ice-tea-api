@@ -1,5 +1,5 @@
 import UsersController from '../controller/UsersController';
-import * as express from 'express';
+import express from 'express';
 import { authenToken } from '../middleware/authenToken';
 const UsersRouter = express.Router();
 UsersRouter.use(authenToken);

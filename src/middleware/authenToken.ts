@@ -8,7 +8,7 @@ export function authenToken(req: Request, res: Response, next: NextFunction) {
   if(!authorizationHeader) return res.sendStatus(HTTP_CODE.UNAUTHORIZED)
   const token = authorizationHeader.split(' ')[1];
   if (!token) return res.sendStatus(HTTP_CODE.UNAUTHORIZED);
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err: any, data: any) => {
+  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET as string, (err: any, data: any) => {
     if (err) return res.sendStatus(HTTP_CODE.FORBIDDEN);
     (req as any).uid = data.uid;
     next();

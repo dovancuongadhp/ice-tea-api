@@ -13,14 +13,14 @@ interface CustomRequest extends Request {
    *  console.log(uid) 
    * */
 
-  uid: string;
+  uid?: string;
 }
 
 class UserController {
   constructor() {}
   // [GET]: getAllUsers
-  async getListUser(req: Request, res: Response) {
-    // console.log(req.uid)
+  async getListUser(req: CustomRequest, res: Response) {
+    console.log("uid",req.uid)
     const listUser = await UsersService.getAllUsers();
     res.status(HTTP_CODE.OK).json(new DataResponseList(200, 'oke', listUser.length, listUser));
   }

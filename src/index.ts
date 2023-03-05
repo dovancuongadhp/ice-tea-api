@@ -2,8 +2,8 @@ import express from 'express';
 import appRoutes from './routers';
 import appConfig from './config';
 import Banner from './banner'
-const app = express();
-const port = process.env.PORT
+
+const app:express.Application = express();
 
 // [CONFIG]
 appConfig(app)
@@ -19,6 +19,7 @@ app.get('/hello',(req,res)=>{
 })
 
 
+const port = process.env.PORT
 app.listen(port, () => {
   console.log(`The application is listening on port ${port}`);
 });

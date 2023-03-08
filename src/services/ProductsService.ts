@@ -1,9 +1,9 @@
-import ProductDto from '../dto/ProductDto';
-import ContainerRepo from '../repositories';
-import ProductsRepository from '../repositories/ProductsRepository';
-import ErrorResponse from '../models/ErrorResponse';
-import { ERROR_CODE } from '../types/ErrorsCode';
-import Product from '../entities/Product';
+import ProductDto from '@src/dto/ProductDto';
+import ContainerRepo from '@src/repositories';
+import ProductsRepository from '@src/repositories/ProductsRepository';
+import ErrorResponse from '@src/models/ErrorResponse';
+import { ERROR_CODE } from '@src/types/ErrorsCode';
+import Product from '@src/entities/Product';
 
 class ProductService {
   private readonly productRepository: ProductsRepository;

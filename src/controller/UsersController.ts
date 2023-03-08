@@ -1,10 +1,10 @@
 import {NextFunction, Request, Response } from 'express';
 // import CustomRequest from '../types/express'
-import UsersService from '../services/UsersService';
-import DataResponse from '../models/DataResponse';
-import { ERROR_CODE } from '../types/ErrorsCode';
-import { HTTP_CODE } from '../types/HttpCode';
-import DataResponseList from '../models/DataResponseList';
+import UsersService from '@src/services/UsersService';
+import DataResponse from '@src/models/DataResponse';
+import { ERROR_CODE } from '@src/types/ErrorsCode';
+import { HTTP_CODE } from '@src/types/HttpCode';
+import DataResponseList from '@src/models/DataResponseList';
 interface CustomRequest extends Request {
   /**
    *  thêm trường uid vào Request (bên /middleware/authenToken đã gán uid nếu verify thành công)

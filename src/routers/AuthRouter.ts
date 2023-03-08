@@ -1,5 +1,5 @@
 import express from 'express';
-import AuthController from '../controller/auth/AuthController';
+import AuthController from '@src/controller/auth/AuthController';
 const AuthRouter = express.Router();
 // AuthRouter.use(authenToken);
 AuthRouter.post('/login', AuthController.login);

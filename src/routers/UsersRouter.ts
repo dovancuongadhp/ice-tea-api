@@ -1,6 +1,6 @@
-import UsersController from '../controller/UsersController';
 import express from 'express';
-import { authenToken } from '../middleware/authenToken';
+import UsersController from '@src/controller/UsersController';
+import { authenToken } from '@src/middleware/authenToken';
 const UsersRouter = express.Router();
 UsersRouter.use(authenToken);
 UsersRouter.get('/getAllUsers', UsersController.getListUser);

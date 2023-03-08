@@ -1,9 +1,9 @@
 import { Request, Response } from 'express';
-import DataResponse from '../../models/DataResponse';
-import { ERROR_CODE } from '../../types/ErrorsCode';
-import UserAuthService from '../../services/auth/UserAuthService';
-import { setTokenCookie } from '../../utils/setCookie';
-import { HTTP_CODE } from '../../types/HttpCode';
+import DataResponse from '@src/models/DataResponse';
+import { ERROR_CODE } from '@src/types/ErrorsCode';
+import UserAuthService from '@src/services/auth/UserAuthService';
+import { setTokenCookie } from '@src/utils/setCookie';
+import { HTTP_CODE } from '@src/types/HttpCode';
 class AuthController {
   constructor() {}
   async login(req: Request, res: Response, next: any) {

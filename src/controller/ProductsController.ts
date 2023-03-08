@@ -1,9 +1,9 @@
 import { Request, Response, query } from 'express';
-import ProductsService from '../services/ProductsService';
-import { HTTP_CODE } from '../types/HttpCode';
-import DataResponse from '../models/DataResponse';
-import { ERROR_CODE } from '../types/ErrorsCode';
-import DataResponseList from '../models/DataResponseList';
+import ProductsService from '@src/services/ProductsService';
+import { HTTP_CODE } from '@src/types/HttpCode';
+import DataResponse from '@src/models/DataResponse';
+import { ERROR_CODE } from '@src/types/ErrorsCode';
+import DataResponseList from '@src/models/DataResponseList';
 class ProductsController {
   constructor() {}
   // [GET]: getAllProducts
